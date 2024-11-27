@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Imagem Centralizada com Música</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            background: url('https://i.imgur.com/zr1mavs.gif') no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        /* Caixa com blur */
+        .container {
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(8px);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 500px;
+        }
+
+        /* Estilo da imagem */
+        .container img {
+            width: 90%;
+            height: auto;
+            margin-bottom: 10px;
+        }
+
+        /* Estilo do botão principal */
+        .btn {
+            background: url('https://i.imgur.com/cV8OcY9.png') no-repeat center center;
+            background-size: contain;
+            width: 300px;
+            height: 200px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            transform: scale(1.1);
+        }
+
+        /* Botões de Play e Pause no canto superior esquerdo */
+        .control-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s ease;
+        }
+
+        .control-btn:hover {
+            transform: scale(1.2);
+        }
+
+        /* Ícones de Play e Pause */
+        .play-btn::before {
+            content: '▶';
+            font-size: 20px;
+            color: #000;
+        }
+
+        .pause-btn::before {
+            content: '❚❚';
+            font-size: 20px;
+            color: #000;
+        }
+
+        /* Esconde o iframe */
+        iframe {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Botões de Play e Pause no canto superior esquerdo -->
+    <button id="playButton" class="control-btn play-btn" onclick="playMusic()"></button>
+    <button id="pauseButton" class="control-btn pause-btn" onclick="pauseMusic()" style="display: none;"></button>
+
+    <!-- Caixa central -->
+    <div class="container">
+        <img src="https://i.imgur.com/L5XzBdD.png" alt="Imagem centralizada">
+        <button class="btn" onclick="alert('Botão clicado!')"></button>
+    </div>
+
+    <!-- Player de música oculto -->
+    <iframe id="youtubePlayer" 
+            src="https://www.youtube.com/embed/_wmT9U1X7Cw?enablejsapi=1" 
+            allow="autoplay" 
+            frameborder="0">
+    </iframe>
+
+    <script>
+        function playMusic() {
+            const iframe = document.getElementById('youtubePlayer');
+            iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+            
+            // Mostrar o botão de pause e esconder o botão de play
+            document.getElementById('playButton').style.display = 'none';
+            document.getElementById('pauseButton').style.display = 'block';
+        }
+
+        function pauseMusic() {
+            const iframe = document.getElementById('youtubePlayer');
+            iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+            
+            // Mostrar o botão de play e esconder o botão de pause
+            document.getElementById('playButton').style.display = 'block';
+            document.getElementById('pauseButton').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
